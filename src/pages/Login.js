@@ -23,7 +23,7 @@ export default class Login extends React.Component {
 
     } else {
 
-      alert('logou')
+
       firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
