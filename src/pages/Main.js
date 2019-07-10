@@ -14,7 +14,9 @@ export default class Main extends React.Component {
      tempC:'',
      windKph:'',
      icon:'',
-     data: []
+     data: [],
+     longitude:'',
+     latitude:''
     
     }
 
@@ -24,11 +26,14 @@ export default class Main extends React.Component {
     getLocation()
 
     setTimeout(()=>{
-      let data = new getData()
-      console.log(data)
+      let data = new getData()     
       this.setState({city: data.city, feelsC: data.feelsC, tempC: data.tempC,windKph:data.windKph,icon:data.icon, data: data })
 
     },5000)
+    
+    // setTimeout(()=>{
+    //   this.getPosition()
+    // },5000)
   
     this.setState({ currentUser })
 
@@ -47,6 +52,22 @@ signOut = () => {
 
 }
 
+atualizaPosicao = () => {
+    
+  getLocation()
+  this.setState({data:[]})
+
+  setTimeout(()=>{
+    let data = new getData()
+    console.log(data)
+    if(data){
+      this.setState({city: data.city, feelsC: data.feelsC, tempC: data.tempC,windKph:data.windKph,icon:data.icon, data: data })
+    }
+  },8000)
+  }
+
+  
+
 
 render() {
     const { currentUser, city, feelsC, tempC, data, icon, windKph  } = this.state
@@ -57,7 +78,7 @@ render() {
           {data.length === 0 ?
               <Card style={styles.containerLoadingCard}>
                 <View style={styles.containerLoading}>
-                  <Text>Loading</Text>
+                  <Text>Onde tu ta o vivente??</Text>
                   <ActivityIndicator size="large" />
                 </View>
               </Card>
@@ -78,18 +99,17 @@ render() {
                 </Text>
                 <Button          
                   backgroundColor='#03A9F4'
+                  onPress={this.atualizaPosicao}
+                  buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 10}}
+                  title='Ué!? Eu não to nesse lugar!' />
+                   <Button          
+                  backgroundColor='#03A9F4'
                   onPress={this.signOut}
                   buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                   title='Sair' />
             </Card>
                       
             }
-          
-            
-          
-              {/* <TouchableOpacity style={styles.button} onPress={this.signOut}>
-                  <Text style={styles.buttonText}>Sair</Text>
-                </TouchableOpacity> */}
       </View>
     )
   }
